@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gregory.course.entities.User;
 
+//Não precisa colocar o @Repository pois ja está herdando do JPARepository 
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 }
