@@ -9,6 +9,7 @@ import com.gregory.course.entities.User;
 
 //para informar que é um recurso web e implementado por um controller
 @RestController
+//para informar onde a responsta vai estar
 @RequestMapping(value = "/users")
 public class UserResource {
 	
