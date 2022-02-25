@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //anotações para instruir o jpa como converter a entidade para objeto relacional, priorizar a especificação
 @Entity
 @Table(name = "tb_user") // da um outro nome para a tabela na hora da criação.
@@ -29,8 +31,10 @@ public class User implements Serializable{
 	private String phone;
 	private String password;
 	
+	@JsonIgnore//para que o jackson ignore e não fiquem loop infinito chamado pedido que chama cliente que tem 3 pedidos ...
 	@OneToMany(mappedBy = "client")//informa qual atributo que está mapeado na outra classe
 	private List<Order> order = new ArrayList<>();
+	//Associção para muitos o jpa não carrega auto todos associados Lazyloading
 	
 	public User() {
 	}

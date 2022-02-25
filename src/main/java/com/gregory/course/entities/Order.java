@@ -12,27 +12,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-@Table(name = "tb_order")//da um novo nome para a tabela que será criada
-public class Order  implements Serializable{
-	
+@Table(name = "tb_order") // da um novo nome para a tabela que será criada
+public class Order implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Instant moment;
-	
-	//implementando o pedido para ser relacionado no banco
-	@ManyToOne//muitas orders para 1 usuario
-	@JoinColumn(name = "client_id")//Coloca o nome da coluna de chave estrangeira para este
-	private User client;
-	
-	
-	public Order() {
-		
-	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant moment;
+
+	// com o @JsonIgnore aqui, permite que o json chame os pedidos associados ao
+	// cliente
+	// implementando o pedido para ser relacionado no banco
+	@ManyToOne // muitas orders para 1 usuario
+	@JoinColumn(name = "client_id") // Coloca o nome da coluna de chave estrangeira para este
+	private User client;
+	// Associção para 1 jpa carrega auto o associado
+
+	public Order() {
+
+	}
 
 	public Order(Long id, Instant moment, User client) {
 		super();
@@ -41,42 +46,34 @@ public class Order  implements Serializable{
 		this.client = client;
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public Instant getMoment() {
 		return moment;
 	}
-
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
 
-
 	public User getClient() {
 		return client;
 	}
-
 
 	public void setClient(User client) {
 		this.client = client;
 	}
 
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -89,7 +86,5 @@ public class Order  implements Serializable{
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }
