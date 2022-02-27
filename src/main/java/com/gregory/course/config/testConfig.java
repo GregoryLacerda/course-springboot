@@ -8,9 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.gregory.course.entities.Category;
 import com.gregory.course.entities.Order;
 import com.gregory.course.entities.User;
 import com.gregory.course.entities.enums.OrderStatus;
+import com.gregory.course.repositories.CategoryRepository;
 import com.gregory.course.repositories.OrderRepository;
 import com.gregory.course.repositories.UserRepository;
 
@@ -24,10 +26,19 @@ public class testConfig implements CommandLineRunner{
 	
 	@Autowired//faz com que o spring boot resolve a dependencia e associa uma instancia do UserRepository
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	//implementar a CommandLineRunner para executar quando a aplicação for iniciado usando o metodo abaixo
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Category cat1 = new Category(null, "Electronics");
+		Category cat2 = new Category(null, "Books");
+		Category cat3 = new Category(null, "Computers");
+		
+		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		
 		User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
 		User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456"); 
