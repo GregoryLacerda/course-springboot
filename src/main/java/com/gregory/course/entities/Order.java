@@ -2,19 +2,22 @@ package com.gregory.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gregory.course.entities.enums.OrderStatus;
-import com.gregory.course.services.OrderService;
 
 @Entity
 @Table(name = "tb_order") // da um novo nome para a tabela que será criada
@@ -38,7 +41,11 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id") // Coloca o nome da coluna de chave estrangeira para este
 	private User client;
 	// Associção para 1 jpa carrega auto o associado
-
+	
+	@OneToMany(mappedBy = "id.order", fetch = FetchType.EAGER)//fetch = FetchType.LAZY para resolver o problema de lazy load
+	
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Order() {
 
 	}
@@ -86,6 +93,9 @@ public class Order implements Serializable {
 		
 	}
 
+	public Set<OrderItem> getItems(){
+		return items;
+	}
 
 	@Override
 	public int hashCode() {
