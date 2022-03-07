@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -43,8 +45,11 @@ public class Order implements Serializable {
 	// Associção para 1 jpa carrega auto o associado
 	
 	@OneToMany(mappedBy = "id.order", fetch = FetchType.EAGER)//fetch = FetchType.LAZY para resolver o problema de lazy load
-	
 	private Set<OrderItem> items = new HashSet<>();
+	
+	//como é a classe principal que não precisa da exitencia do payment, não usa o MapsId
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//CascadeType.ALL mapea para que as duas entidades tenham o mesmo id
+	private Payment payment;
 	
 	public Order() {
 
@@ -95,6 +100,14 @@ public class Order implements Serializable {
 
 	public Set<OrderItem> getItems(){
 		return items;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	@Override
