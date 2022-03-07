@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gregory.course.entities.User;
 import com.gregory.course.repositories.UserRepository;
+import com.gregory.course.services.exceptions.ResourceNotFoundException;
 
 //A classe precisa ser registrada como um componente do framework(Spring)
 @Service // anotação pra registrar @Component, @Repository e @Service 
@@ -23,7 +24,8 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);//essa operação retorna um tipo Optional
-		return obj.get();
+		// codigo para tentar realizar a operação de buscar pelo id e caso de erro com lambda ele lança a exceção
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	//inserindo no banco um novo objeto user
